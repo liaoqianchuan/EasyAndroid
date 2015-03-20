@@ -1,0 +1,4 @@
+<factorypath>
+    <factorypathentry kind="WKSPJAR" id="/TextViewFinder/libs/AutoFinder.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/TextViewFinder/libs/butterknife-6.1.0.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>
