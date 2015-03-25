@@ -38,10 +38,12 @@ EasyLog在我们调试程序的时候，还可以打印长log，通常我们在�
 1. 加密的数据库，更安全。
 2. 加密的数据库，更安全。
 3. 简单的数据库操作。
+
 ######配置
+
 1. 将icudt46l.zip拷贝到项目assets目录下。
 2. 在AndroidManifest.xml文件的Application内加入
-    <meta-data
+        <meta-data
             android:name="DB_NAME"
             android:value="sampledb" >
         </meta-data>
@@ -52,46 +54,46 @@ EasyLog在我们调试程序的时候，还可以打印长log，通常我们在�
         <meta-data
             android:name="DB_TABLSE_PACKAGE"
             android:value="com.example.textviewfinder.dbbean" >
-    </meta-data
-设置数据库名，版本，数据库表结构所在的包。
+        </meta-data
+    设置数据库名，版本，数据库表结构所在的包。
 3. 新建自己的Application类
-    public class SampleApp extends Application{
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
+        public class SampleApp extends Application{
         
+        @Override
+        public void onCreate() {
+        super.onCreate();
+                
         EasyDb.getInstance().init(this, "secretkey"); 
-    }
+        }
 
-初始化数据库。
+    初始化数据库。
 
 4. 在com.amida.easydb.DbTable下面新建你需要的数据库表
-    public class Team extends DbTable {
-    @Column(name = "teamName")
-    private String teamName;
-    @Column(name = "teamLeader")
-    private String teamLeader;
+        public class Team extends DbTable {
+        @Column(name = "teamName")
+        private String teamName;
+        @Column(name = "teamLeader")
+        private String teamLeader;
+        
+        public String getTeamName() {
+            return teamName;
+        }
+            
+        public void setTeamName(String teamName) {
+            this.teamName = teamName;
+        }
+            
+        public String getTeamLeader() {
+            return teamLeader;
+        }
+        
+        public void setTeamLeader(String teamLeader) {
+            this.teamLeader = teamLeader;
+        }
+        
+        }
 
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public String getTeamLeader() {
-        return teamLeader;
-    }
-
-    public void setTeamLeader(String teamLeader) {
-        this.teamLeader = teamLeader;
-    }
-
-    }
-
-定义表结构，表名就是类名，列名由Column标签指定。
+    定义表结构，表名就是类名，列名由Column标签指定。
 
 
 
