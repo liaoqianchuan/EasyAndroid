@@ -1,4 +1,6 @@
 EasyAndroid
+
+**该开源库参考了ActiveAndroid，retrofit，并使用了sqlcipher-for-android和android-async-http，在这些库的思想上做了一些适合自己项目的扩展。本着方便自己开发Android程序的目的诞生了这个库。目前该库还在不断完善中**
 ==============================
 大纲
 ------------------------------
@@ -125,9 +127,118 @@ EasyLog在我们调试程序的时候，还可以打印长log，通常我们在�
         tmpTeam.save();
     }
     
+###EasyHttp
+* 用户只需定义Service的接口，不需要写Http的实现
+* 可以很方便的扩展其他业务逻辑。
+* 支持假数据，比如只想本地调试，而不想和服务器联调，可以很方便的设置假数据供本地测试。
 
+#####定义接口
+如下所示，定义了两个接口，第一个是取IP信息的接口，第二个是下载图片的接口。
+EasyHttp标签：
+1.  url - 定义该接口指向的url。
+2.  dummyData - 定义该接口返回的假数据。
+3.  apiType - 有下载文件和一般的获取数据类型
+    
+    
+    public interface TestService extends IService {
+    @EasyHttp(
+            url = Constants.API_IPINFO,
+            dummyData = DummyData.DUMMY_IPINFO
+            )
+     void getIpInfo(Object request, ResponseListener<ResponseIpInfo> responseListener);
+   
+    
+    @EasyHttp(
+            apiType=ApiType.DOWNLOADFILE,
+            url = Constants.API_DOWNPIC,
+            dummyData=DummyData.DUMMY_PIC
+            )
+    void downloadPic(Object request, ResponseListener<File> responseListener, File file);
+    }
 
+#####基本使用
+如下所示，我们定义好API请求中需要传递的参数的数据结构。
+    
+    public class RequestIpInfo {
+    private String format;
 
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+    }
+    
+在我们调用接口的时候，这个数据结构中的值会自动帮我们被转换成如下的形式：
+    http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json
+
+接下来，我们只需要在回调函数中实现我们的业务逻辑。
+    RequestIpInfo request = new RequestIpInfo();
+        request.setFormat("json");
+        ResponseListener responseListener = new ResponseListener<ResponseIpInfo>() {
+    
+            @Override
+            public void onSuccess(ResponseIpInfo response) {
+                super.onSuccess(response);
+                EasyLog.d("response:" + new Gson().toJson(response));
+            }
+    
+            @Override
+            public void onFailure(int errorCode, String errorMessage) {
+    
+            }
+    
+            @Override
+            public void onProgress(int bytesWritten, int totalSize) {
+    
+            }
+    
+        };
+    
+    ((TestService) ServiceFactory.create(this, ServiceType.NET, TestService.class)).getIpInfo(request, responseListener);
+    
+#####下载文件
+下载文件和前面的方式类似。
+    
+    private void testEasyDownload() {
+        final String picPath = Environment.getExternalStorageDirectory() + File.separator + "dddd.png";
+        EasyLog.d("path: " + picPath);
+        File picFile = new File(picPath);
+        
+        RequestDownPic request = new RequestDownPic();
+        ResponseListener responseListener = new ResponseListener<File>() {
+        
+            @Override
+            public void onSuccess(File response) {
+                super.onSuccess(response);
+            }
+                
+            @Override
+            public void onFailure(int errorCode, String errorMessage) {
+    
+            }
+    
+            @Override
+            public void onProgress(int bytesWritten, int totalSize) {
+    
+            }
+        };
+    
+        ((TestService) ServiceFactory.create(this, ServiceType.NET, TestService.class)).downloadPic(request, responseListener, picFile);
+    }
+    
+#####返回假数据    
+要本地测试，返回我们定义的假数据，只需要在定义API接口的时候声明dummyData，然后创建一个ServiceType.Dummy类型的Service就可以了
+    
+    ((TestService) ServiceFactory.create(this, ServiceType.DUMMY, TestService.class)).downloadPic(request, responseListener, picFile);
+    
+#####缓存
+程序可以将API请求得到的数据缓存到本地，在请求API的时候，可以先查询本地缓存，如果缓存没有，再查询服务器。
+也很方便，值需创建一个ServiceType.CACHE的Service就可以了。
+    
+    ((TestService) ServiceFactory.create(this, ServiceType.CACHE, TestService.class)).downloadPic(request, responseListener, picFile);
 
 
 
