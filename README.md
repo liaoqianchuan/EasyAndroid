@@ -54,7 +54,7 @@ EasyLog在我们调试程序的时候，还可以打印长log，通常我们在�
         <meta-data
             android:name="DB_TABLSE_PACKAGE"
             android:value="com.example.textviewfinder.dbbean" >
-        </meta-data
+        </meta-data>
     设置数据库名，版本，数据库表结构所在的包。
 3. 新建自己的Application类
         public class SampleApp extends Application{
