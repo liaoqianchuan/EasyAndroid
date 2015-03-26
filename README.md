@@ -172,9 +172,11 @@ EasyHttp标签：
     }
     
 在我们调用接口的时候，这个数据结构中的值会自动帮我们被转换成如下的形式：
+    
     http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json
-
+    
 接下来，我们只需要在回调函数中实现我们的业务逻辑。
+    
     RequestIpInfo request = new RequestIpInfo();
         request.setFormat("json");
         ResponseListener responseListener = new ResponseListener<ResponseIpInfo>() {
