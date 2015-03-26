@@ -39,7 +39,7 @@ EasyLog在我们调试程序的时候，还可以打印长log，通常我们在�
 2. 加密的数据库，更安全。
 3. 简单的数据库操作。
 
-######配置
+#####配置
 
 1. 将icudt46l.zip拷贝到项目assets目录下。
 2. 在AndroidManifest.xml文件的Application内加入
@@ -98,6 +98,35 @@ EasyLog在我们调试程序的时候，还可以打印长log，通常我们在�
         }
         
     定义表结构，表名就是类名，列名由Column标签指定。
+
+#####保存数据
+    
+    Team team = new Team();
+    team.setTeamLeader("liaoqianchuan");
+    team.setTeamName("OneTeam");
+    team.save();
+    
+#####查询数据
+    
+    ArrayList<Team> teams = new Select().from(Team.class).orderBy("teamLeader").execute();
+    
+#####删除数据
+    
+    team.delete();
+    
+    new Delete().from(Team.class).where("teamName='liaoqianchuan'").execute();
+    
+#####更新数据
+    
+    ArrayList<Team> teams = new Select().from(Team.class).orderBy("teamLeader").execute();
+    
+    for (Team tmpTeam : teams) {
+        tmpTeam.setTeamLeader("Gebi LaoWang");
+        tmpTeam.save();
+    }
+    
+
+
 
 
 
