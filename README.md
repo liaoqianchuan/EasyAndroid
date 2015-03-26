@@ -44,18 +44,18 @@ EasyLog在我们调试程序的时候，还可以打印长log，通常我们在�
 1. 将icudt46l.zip拷贝到项目assets目录下。
 2. 在AndroidManifest.xml文件的Application内加入
         
-        \<meta-data
+        <meta-data
             android:name="DB_NAME"
-            android:value="sampledb" \>
-        \</meta-data\>
-        \<meta-data
+            android:value="sampledb" >
+        </meta-data>
+        <meta-data
             android:name="DB_VERSION"
-            android:value="1" \>
-        \</meta-data\>
-        \<meta-data
+            android:value="1" >
+        </meta-data>
+        <meta-data
             android:name="DB_TABLSE_PACKAGE"
-            android:value="com.example.textviewfinder.dbbean" \>
-        \</meta-data\>
+            android:value="com.example.textviewfinder.dbbean" >
+        </meta-data>
         
     设置数据库名，版本，数据库表结构所在的包。
 3. 新建自己的Application类
